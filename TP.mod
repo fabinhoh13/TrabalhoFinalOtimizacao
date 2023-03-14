@@ -6,7 +6,7 @@ param cp; #Quantidade de Terminais de Coleta
 #Sets
 set No := {0}; #Nó que representa o depósito
 set Nk := {1 .. consumidores}; #Conjunto de nós que representam as pessoas que receberão seus produtos em casa
-set Nc := {1 .. cp}; #Conjunto de nós que representam os Terminais de Coleta
+set Nc := {consumidores + 1 .. cp + consumidores + 1}; #Conjunto de nós que representam os Terminais de Coleta
 set Nl := Nc union Nk; #União entre os consumidores HD e os consumidores CP
 set N := No union Nc union Nk; #União entre todos os nós
 set K := {1 .. v}; #Conjunto de veículos
@@ -25,12 +25,14 @@ param td {i in N, k in K}; #Tempo de partida depois que um veículo entrega em um
 var x {i in N, j in N, k in K} binary;
 
 #Função Objetivo
-minimize Z: sum {i in N} sum {j in N} sum {k in K} tt[i,j] * x[i,j,k];
+minimize Z: sum {i in N, j in N, k in K} tt[i,j] * x[i,j,k];
 
 
 #Restrições
 
-Rest1 {j in Nl}: sum {i in N} sum {k in K} x[i,j,k] = 1;
+Rest1 {j in Nl}: sum {i in N, k in K} x[i,j,k] = 1;
+Rest2 {i in N, k in K}: sum {j in Nl} x[i,j,k] = sum {j in N} x[i,j,k];
+Rest3 {k in K} : sum {i in No, j in N} x[i,j,k] = 1;
 
 
 #Dados do problema
