@@ -20,6 +20,7 @@ param T; #Tempo de planejamento
 param q {i in Nl}; # Demanda de cada consumidor
 param U {i in N, j in N, k in K}; #Demanda restante depois da entrega de cada nó pra determinado veículo
 param td {i in N, k in K}; #Tempo de partida depois que um veículo entrega em um determinado nó
+param M; #Big M
 
 #Variável de decisão
 var x {i in N, j in N, k in K} binary;
@@ -38,6 +39,9 @@ Rest51 {j in N, k in K} : sum {i in N} x[i,j,k] * e[i] <= td[j,k];
 Rest52 {j in N, k in K} : td[j,k] <= sum {i in N} x[i,j,k] * l[i];
 Rest61 {i in N, j in N, k in K} : td[i,k] <= x[i,j,k] * tt[i,j];
 Rest62 {i in N, j in N, k in K} : x[i,j,k] * tt[i,j] <= td[j,k] + T * (1 - x[i,j,k]);
+Rest71 {i in Nl, k in K} : 0 <= U[i,k];
+Rest72 {i in Nl, k in K} : U[i,k] <= Q - q[i];
+Rest8 {i in Nl, j in N, k in K} : q[j] + U[j,k] <= U[i,j] + M * (1 - x[i,j,k])
 
 
 #Dados do problema
@@ -45,5 +49,6 @@ data;
 param v := 2;
 param cp := 3;
 param consumidores := 10;
+param M := 999999999;
 
 end;
