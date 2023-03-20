@@ -35,13 +35,13 @@ Rest1 {j in Nl}: sum {i in N, k in K} x[i,j,k] = 1;
 Rest2 {i in N, k in K}: sum {j in Nl diff {i}} x[i,j,k] = sum {j in N diff {i}} x[i,j,k];
 Rest3 {k in K} : sum {i in No, j in N diff No} x[i,j,k] = 1;
 Rest4 {k in K} : sum {i in N diff No, j in No} x[i,j,k] = 1;
-#Rest51 {j in N, k in K} : sum {i in Nk} x[i,j,k] * e[i] <= td[j,k];
-#Rest52 {j in N, k in K} : td[j,k] <= sum {i in Nk} x[i,j,k] * l[i];
-#Rest61 {i in N, j in N, k in K} : td[i,k] <= x[i,j,k] * tt[i,j];
-#Rest62 {i in N, j in N, k in K} : x[i,j,k] * tt[i,j] <= td[j,k] + T * (1 - x[i,j,k]);
-#Rest71 {i in Nl, k in K} : 0 <= U[i,k];
-#Rest72 {i in Nl, k in K} : U[i,k] <= Q - q[i];
-#Rest8 {i in Nl, j in N, k in K} : q[j] + U[j,k] <= U[i,j] + M * (1 - x[i,j,k]);
+Rest51 {j in N, k in K} : sum {i in Nk} x[i,j,k] * e[i] <= td[j,k];
+Rest52 {j in N, k in K} : td[j,k] <= sum {i in Nk} x[i,j,k] * l[i];
+Rest61 {i in N, j in N, k in K} : td[i,k] <= x[i,j,k] * tt[i,j];
+Rest62 {i in N, j in N, k in K} : x[i,j,k] * tt[i,j] <= td[j,k] + T * (1 - x[i,j,k]);
+Rest71 {i in Nl, k in K} : 0 <= U[i,k];
+Rest72 {i in Nl, k in K} : U[i,k] <= Q - q[i];
+Rest8 {i in Nl, j in Nl, k in K} : q[j] + U[j,k] <= U[i,k] + M * (1 - x[i,j,k]);
 
 
 #Dados do problema
@@ -83,5 +83,28 @@ param q:= 1 3
 		  6 1
 		  7 1;
 
+param U :    1:=
+		   0 1
+		   1 1
+		   2 1
+		   3 1
+		   4 1
+		   5 1
+		   6 1
+		   7 1;
+
+
+param td :    1:=
+			0 0
+			1 1.42
+			2 1.5
+			3 1.12
+			4 0.98
+			5 1.15
+			6 0.65
+			7 0.9;
+
 
 end;
+
+printf '%d', Z;
